@@ -25,6 +25,11 @@ lib/
 bin/
 
 
+# Project executable
+
+ZombieTraitStudio
+
+
 # Temporary folders
 
 temp/
