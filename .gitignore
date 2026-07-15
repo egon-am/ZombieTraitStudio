@@ -1,18 +1,49 @@
 # Lazarus / Free Pascal
+
 *.o
 *.ppu
 *.compiled
-*.bak
+*.rst
+*.or
+
+
+# Lazarus IDE
+
 *.lps
 
+
+# Backup files
+
+*.bak
+backup/
+**/backup/
+
+
 # Build output
+
 lib/
 bin/
 
-# Temporary files
-temp/*
-output/*
+
+# Temporary folders
+
+temp/
+
+
+# Generated output
+
+output/
+
 
 # OS files
+
+.DS_Store
+Thumbs.db
+
+
+# Editor files
+
 *.swp
+*.swo
 *~
+
