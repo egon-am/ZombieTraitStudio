@@ -40,6 +40,21 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uMain"/>
       </Unit>
+      <Unit>
+        <Filename Value="source/core/ulogger.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uLogger"/>
+      </Unit>
+      <Unit>
+        <Filename Value="source/core/utypes.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uTypes"/>
+      </Unit>
+      <Unit>
+        <Filename Value="source/core/uexceptions.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uExceptions"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

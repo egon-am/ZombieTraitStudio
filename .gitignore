@@ -1,28 +1,18 @@
-# Lazarus / FreePascal
-*.ppu
+# Lazarus / Free Pascal
 *.o
-*.or
+*.ppu
 *.compiled
-lib/
-
-# Backup
 *.bak
-*.~
-backup/
+*.lps
 
 # Build output
-output/
-temp/
+lib/
+bin/
 
-# Logs
-logs/
+# Temporary files
+temp/*
+output/*
 
-# Linux
+# OS files
+*.swp
 *~
-.directory
-
-# IDE
-.vscode/
-
-# Cache
-cache/
