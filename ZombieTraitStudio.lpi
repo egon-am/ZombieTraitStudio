@@ -37,6 +37,7 @@
         <Filename Value="source/forms/umain.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="frmMain"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uMain"/>
       </Unit>
@@ -54,6 +55,21 @@
         <Filename Value="source/core/uexceptions.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="uExceptions"/>
+      </Unit>
+      <Unit>
+        <Filename Value="source/core/upaths.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uPaths"/>
+      </Unit>
+      <Unit>
+        <Filename Value="source/core/uconfig.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uConfig"/>
+      </Unit>
+      <Unit>
+        <Filename Value="source/core/uapp.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uApp"/>
       </Unit>
     </Units>
   </ProjectOptions>
