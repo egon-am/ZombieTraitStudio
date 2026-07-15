@@ -5,163 +5,228 @@ unit uLogger;
 interface
 
 uses
-  Classes, SysUtils;
+    Classes,
+    SysUtils,
+    uTypes;
+
 
 type
-  TLogLevel = (
-    llInfo,
-    llWarning,
-    llError
-  );
 
-  TLogEvent = procedure(
-    Sender: TObject;
-    const ATimeStamp: TDateTime;
-    const ALevel: TLogLevel;
-    const AMessage: string
-  ) of object;
+    { Napló esemény }
 
-  TLogger = class
-  private
-    FLogFileName: string;
-    FOnLog: TLogEvent;
+    TLogEvent = procedure(
+        Sender: TObject;
+        const ALevel: TLogLevel;
+        const AMessage: String
+    ) of object;
 
-    procedure WriteLog(
-      const ALevel: TLogLevel;
-      const AMessage: string
-    );
 
-    function LevelToString(
-      const ALevel: TLogLevel
-    ): string;
+    { Alkalmazás naplózó }
 
-    procedure EnsureLogFolder;
+    TLogger = class
+    private
+        FLogFileName: String;
+        FOnLog: TLogEvent;
 
-  public
-    constructor Create(
-      const ALogFileName: string
-    );
+        procedure EnsureLogFolder;
 
-    destructor Destroy; override;
+        function LevelToString(
+            const ALevel: TLogLevel
+        ): String;
 
-    procedure Info(const AMessage: string);
-    procedure Warning(const AMessage: string);
-    procedure Error(const AMessage: string);
+        procedure WriteLog(
+            const ALevel: TLogLevel;
+            const AMessage: String
+        );
 
-    property LogFileName: string
-      read FLogFileName;
+    public
 
-    property OnLog: TLogEvent
-      read FOnLog
-      write FOnLog;
-  end;
+        constructor Create(
+            const AFileName: String
+        );
+
+
+        procedure Info(
+            const AMessage: String
+        );
+
+        procedure Warning(
+            const AMessage: String
+        );
+
+        procedure Error(
+            const AMessage: String
+        );
+
+        procedure Debug(
+            const AMessage: String
+        );
+
+
+        property LogFileName: String
+            read FLogFileName;
+
+
+        property OnLog: TLogEvent
+            read FOnLog
+            write FOnLog;
+
+    end;
+
 
 implementation
 
-constructor TLogger.Create(const ALogFileName: string);
+
+constructor TLogger.Create(
+    const AFileName: String
+);
 begin
-  inherited Create;
+    inherited Create;
 
-  FLogFileName := ExpandFileName(ALogFileName);
+    FLogFileName :=
+        ExpandFileName(AFileName);
 
-  EnsureLogFolder;
+    EnsureLogFolder;
 end;
 
-destructor TLogger.Destroy;
-begin
-  inherited Destroy;
-end;
 
 procedure TLogger.EnsureLogFolder;
 var
-  Dir: String;
+    LogFolder: String;
 begin
-  Dir := ExtractFilePath(FLogFileName);
+    LogFolder :=
+        ExtractFilePath(FLogFileName);
 
-  if (Dir <> '') and (not DirectoryExists(Dir)) then
-    ForceDirectories(Dir);
+    if (LogFolder <> '') and
+       (not DirectoryExists(LogFolder)) then
+    begin
+        ForceDirectories(LogFolder);
+    end;
 end;
+
 
 function TLogger.LevelToString(
-  const ALevel: TLogLevel
-): string;
+    const ALevel: TLogLevel
+): String;
 begin
-  case ALevel of
-    llInfo:
-      Result := 'INFO';
+    case ALevel of
 
-    llWarning:
-      Result := 'WARNING';
+        llInfo:
+            Result := 'INFO';
 
-    llError:
-      Result := 'ERROR';
-  end;
+        llWarning:
+            Result := 'WARNING';
+
+        llError:
+            Result := 'ERROR';
+
+        llDebug:
+            Result := 'DEBUG';
+
+    else
+        Result := 'UNKNOWN';
+
+    end;
 end;
 
+
 procedure TLogger.WriteLog(
-  const ALevel: TLogLevel;
-  const AMessage: string
+    const ALevel: TLogLevel;
+    const AMessage: String
 );
 var
-  F : TextFile;
-  TS : TDateTime;
-  S : String;
+    LogFile: TextFile;
+    Line: String;
 begin
-  TS := Now;
+    Line :=
+        Format(
+            '%s [%s] %s',
+            [
+                FormatDateTime(
+                    'yyyy-mm-dd hh:nn:ss',
+                    Now
+                ),
+                LevelToString(ALevel),
+                AMessage
+            ]
+        );
 
-  S := Format(
-    '%s [%s] %s',
-    [
-      FormatDateTime(
-        'yyyy-mm-dd hh:nn:ss',
-        TS
-      ),
-      LevelToString(ALevel),
-      AMessage
-    ]
-  );
 
-  AssignFile(F, FLogFileName);
+    AssignFile(
+        LogFile,
+        FLogFileName
+    );
 
-  if FileExists(FLogFileName) then
-    Append(F)
-  else
-    Rewrite(F);
 
-  try
-    WriteLn(F, S);
-  finally
-    CloseFile(F);
-  end;
+    if FileExists(FLogFileName) then
+        Append(LogFile)
+    else
+        Rewrite(LogFile);
 
-  if Assigned(FOnLog) then
-    FOnLog(
-      Self,
-      TS,
-      ALevel,
-      AMessage
+
+    try
+        WriteLn(
+            LogFile,
+            Line
+        );
+    finally
+        CloseFile(LogFile);
+    end;
+
+
+    if Assigned(FOnLog) then
+    begin
+        FOnLog(
+            Self,
+            ALevel,
+            AMessage
+        );
+    end;
+end;
+
+
+procedure TLogger.Info(
+    const AMessage: String
+);
+begin
+    WriteLog(
+        llInfo,
+        AMessage
     );
 end;
 
-procedure TLogger.Info(
-  const AMessage: string
-);
-begin
-  WriteLog(llInfo, AMessage);
-end;
 
 procedure TLogger.Warning(
-  const AMessage: string
+    const AMessage: String
 );
 begin
-  WriteLog(llWarning, AMessage);
+    WriteLog(
+        llWarning,
+        AMessage
+    );
 end;
 
+
 procedure TLogger.Error(
-  const AMessage: string
+    const AMessage: String
 );
 begin
-  WriteLog(llError, AMessage);
+    WriteLog(
+        llError,
+        AMessage
+    );
 end;
+
+
+procedure TLogger.Debug(
+    const AMessage: String
+);
+begin
+    WriteLog(
+        llDebug,
+        AMessage
+    );
+end;
+
 
 end.
