@@ -1,0 +1,28 @@
+# Lazarus / FreePascal
+*.ppu
+*.o
+*.or
+*.compiled
+lib/
+
+# Backup
+*.bak
+*.~
+backup/
+
+# Build output
+output/
+temp/
+
+# Logs
+logs/
+
+# Linux
+*~
+.directory
+
+# IDE
+.vscode/
+
+# Cache
+cache/
