@@ -1,0 +1,9 @@
+object frmMain: TfrmMain
+  Left = 415
+  Height = 240
+  Top = 38
+  Width = 320
+  Caption = 'Zombie Trait Studio'
+  DesignTimePPI = 120
+  LCLVersion = '4.6.0.0'
+end
