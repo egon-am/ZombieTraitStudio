@@ -17,7 +17,8 @@ uses
     StdCtrls,
     Menus,
 
-    uApp;
+    uApp,
+    uTrait;
 
 
 type
@@ -49,7 +50,13 @@ type
         TraitList: TListView;
         TraitInfo: TMemo;
 
-        ImagePreview: TImage;
+
+        ImagePanel: TPanel;
+        SourceImagePreview: TImage;
+
+        TraitPreviewPanel: TPanel;
+        TraitPreview: TImage;
+
 
         OpenPictureDialog: TOpenPictureDialog;
 
@@ -66,6 +73,12 @@ type
 
         procedure AboutMenuItemClick(Sender: TObject);
 
+        procedure TraitListSelectItem(
+            Sender: TObject;
+            Item: TListItem;
+            Selected: Boolean
+        );
+
 
     private
 
@@ -81,6 +94,14 @@ type
 
 
         procedure RefreshTraitList;
+
+
+        procedure ShowSelectedTrait;
+
+
+        procedure LoadTraitPreview(
+            const ATrait: TTrait
+        );
 
 
     public
@@ -121,6 +142,7 @@ begin
 end;
 
 
+
 procedure TMainForm.FormDestroy(Sender: TObject);
 begin
     if Assigned(FApp) then
@@ -138,6 +160,7 @@ begin
         );
     end;
 end;
+
 
 
 procedure TMainForm.InitializeInterface;
@@ -170,16 +193,25 @@ begin
     );
 
 
-    ImagePreview.Stretch :=
+    SourceImagePreview.Stretch :=
         True;
 
 
-    ImagePreview.Proportional :=
+    SourceImagePreview.Proportional :=
+        True;
+
+
+    TraitPreview.Stretch :=
+        True;
+
+
+    TraitPreview.Proportional :=
         True;
 
 
     RefreshTraitList;
 end;
+
 
 
 procedure TMainForm.RefreshTraitList;
@@ -218,6 +250,144 @@ begin
 end;
 
 
+
+procedure TMainForm.ShowSelectedTrait;
+var
+    Index: Integer;
+    Trait: TTrait;
+begin
+    if TraitList.Selected = nil then
+    begin
+        Exit;
+    end;
+
+
+    Index :=
+        TraitList.Selected.Index;
+
+
+    if (Index < 0) or
+       (Index >= FApp.Traits.Count) then
+    begin
+        Exit;
+    end;
+
+
+    Trait :=
+        FApp.Traits.Items[Index];
+
+
+    TraitInfo.Clear;
+
+
+    TraitInfo.Lines.Add(
+        'Name: ' +
+        Trait.Name
+    );
+
+
+    TraitInfo.Lines.Add(
+        'Category: ' +
+        Trait.Category
+    );
+
+
+    TraitInfo.Lines.Add(
+        ''
+    );
+
+
+    TraitInfo.Lines.Add(
+        'Description:'
+    );
+
+
+    TraitInfo.Lines.Add(
+        Trait.Description
+    );
+
+
+    TraitInfo.Lines.Add(
+        ''
+    );
+
+
+    TraitInfo.Lines.Add(
+        'Thumbnail: ' +
+        Trait.ThumbnailFile
+    );
+
+
+    TraitInfo.Lines.Add(
+        'Mask: ' +
+        Trait.MaskFile
+    );
+
+
+    LoadTraitPreview(
+        Trait
+    );
+end;
+
+
+
+procedure TMainForm.LoadTraitPreview(
+    const ATrait: TTrait
+);
+begin
+    TraitPreview.Picture.Clear;
+
+
+    if not Assigned(ATrait) then
+    begin
+        Exit;
+    end;
+
+
+    if ATrait.ThumbnailFile = '' then
+    begin
+        Exit;
+    end;
+
+
+    if not FileExists(
+        ATrait.ThumbnailFile
+    ) then
+    begin
+        Exit;
+    end;
+
+
+    TraitPreview.Picture.LoadFromFile(
+        ATrait.ThumbnailFile
+    );
+end;
+
+
+
+procedure TMainForm.TraitListSelectItem(
+    Sender: TObject;
+    Item: TListItem;
+    Selected: Boolean
+);
+begin
+    if not Selected then
+    begin
+        Exit;
+    end;
+
+
+    ShowSelectedTrait;
+
+
+    UpdateStatus(
+        'Trait selected: ' +
+        Item.Caption
+    );
+end;
+
+
+
 procedure TMainForm.UpdateStatus(
     const AText: String
 );
@@ -225,6 +395,7 @@ begin
     StatusBar.SimpleText :=
         AText;
 end;
+
 
 
 procedure TMainForm.OpenImageMenuItemClick(
@@ -242,7 +413,7 @@ begin
     );
 
 
-    ImagePreview.Picture.Assign(
+    SourceImagePreview.Picture.Assign(
         FApp.Image.Picture
     );
 
@@ -262,12 +433,14 @@ begin
 end;
 
 
+
 procedure TMainForm.ExitMenuItemClick(
     Sender: TObject
 );
 begin
     Close;
 end;
+
 
 
 procedure TMainForm.AboutMenuItemClick(
@@ -279,6 +452,7 @@ begin
         'Version 0.1.0'
     );
 end;
+
 
 
 end.

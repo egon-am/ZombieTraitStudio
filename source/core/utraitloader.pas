@@ -24,6 +24,12 @@ type
         FFolder: String;
 
 
+        function ResolveFilePath(
+            const AFileName: String;
+            const ABaseFolder: String
+        ): String;
+
+
         procedure LoadFile(
             const AFileName: String;
             const ATraits: TTraitCollection
@@ -57,7 +63,6 @@ constructor TTraitLoader.Create(
 begin
     inherited Create;
 
-
     FFolder :=
         IncludeTrailingPathDelimiter(
             ExpandFileName(
@@ -67,6 +72,41 @@ begin
 end;
 
 
+
+function TTraitLoader.ResolveFilePath(
+    const AFileName: String;
+    const ABaseFolder: String
+): String;
+begin
+    if Trim(AFileName) = '' then
+    begin
+        Result := '';
+        Exit;
+    end;
+
+
+    if AFileName[1] = PathDelim then
+    begin
+        Result :=
+            ExpandFileName(
+                AFileName
+            );
+
+        Exit;
+    end;
+
+
+    Result :=
+        ExpandFileName(
+            IncludeTrailingPathDelimiter(
+                ABaseFolder
+            ) +
+            AFileName
+        );
+end;
+
+
+
 procedure TTraitLoader.Load(
     const ATraits: TTraitCollection
 );
@@ -74,9 +114,7 @@ var
     Search: TSearchRec;
 begin
     if not DirectoryExists(FFolder) then
-    begin
         Exit;
-    end;
 
 
     if FindFirst(
@@ -94,7 +132,6 @@ begin
                     ATraits
                 );
 
-
             until FindNext(Search) <> 0;
 
 
@@ -107,6 +144,7 @@ begin
 end;
 
 
+
 procedure TTraitLoader.LoadFile(
     const AFileName: String;
     const ATraits: TTraitCollection
@@ -114,6 +152,7 @@ procedure TTraitLoader.LoadFile(
 var
     Ini: TIniFile;
     Trait: TTrait;
+    BaseFolder: String;
 begin
     Ini :=
         TIniFile.Create(
@@ -160,19 +199,31 @@ begin
                 );
 
 
+            BaseFolder :=
+                ExtractFilePath(
+                    AFileName
+                );
+
+
             Trait.ThumbnailFile :=
-                Ini.ReadString(
-                    'files',
-                    'thumbnail',
-                    ''
+                ResolveFilePath(
+                    Ini.ReadString(
+                        'files',
+                        'thumbnail',
+                        ''
+                    ),
+                    BaseFolder
                 );
 
 
             Trait.MaskFile :=
-                Ini.ReadString(
-                    'files',
-                    'mask',
-                    ''
+                ResolveFilePath(
+                    Ini.ReadString(
+                        'files',
+                        'mask',
+                        ''
+                    ),
+                    BaseFolder
                 );
 
 
