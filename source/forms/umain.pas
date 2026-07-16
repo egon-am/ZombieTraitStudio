@@ -14,16 +14,17 @@ uses
     ExtDlgs,
     ExtCtrls,
     ComCtrls,
+    StdCtrls,
     Menus,
 
     uApp;
+
 
 type
 
     { TMainForm }
 
     TMainForm = class(TForm)
-        ImagePreview: TImage;
 
         MainMenu: TMainMenu;
 
@@ -37,6 +38,18 @@ type
 
         HelpMenu: TMenuItem;
         AboutMenuItem: TMenuItem;
+
+
+        TraitPanel: TPanel;
+        TraitSplitter: TSplitter;
+
+        InfoPanel: TPanel;
+        InfoSplitter: TSplitter;
+
+        TraitList: TListView;
+        TraitInfo: TMemo;
+
+        ImagePreview: TImage;
 
         OpenPictureDialog: TOpenPictureDialog;
 
@@ -64,6 +77,9 @@ type
         );
 
 
+        procedure InitializeInterface;
+
+
     public
 
     end;
@@ -88,6 +104,9 @@ begin
     FApp.Start;
 
 
+    InitializeInterface;
+
+
     UpdateStatus(
         'Zombie Trait Studio ready'
     );
@@ -110,6 +129,41 @@ begin
 
         FreeAndNil(FApp);
     end;
+end;
+
+
+procedure TMainForm.InitializeInterface;
+begin
+    TraitList.ViewStyle :=
+        vsReport;
+
+
+    TraitList.Columns.Clear;
+
+
+    TraitList.Columns.Add.Caption :=
+        'Trait';
+
+
+    TraitInfo.Clear;
+
+
+    TraitInfo.Lines.Add(
+        'Trait information'
+    );
+
+
+    TraitInfo.Lines.Add(
+        'No trait selected.'
+    );
+
+
+    ImagePreview.Stretch :=
+        True;
+
+
+    ImagePreview.Proportional :=
+        True;
 end;
 
 

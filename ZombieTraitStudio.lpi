@@ -86,6 +86,16 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="uUtils"/>
       </Unit>
+      <Unit>
+        <Filename Value="source/core/udocument.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uDocument"/>
+      </Unit>
+      <Unit>
+        <Filename Value="source/core/uimage.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uImage"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
