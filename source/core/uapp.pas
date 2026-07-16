@@ -11,7 +11,8 @@ uses
     uConfig,
     uLogger,
     uPaths,
-    uImage;
+    uImage,
+    uTraitCollection;
 
 
 type
@@ -29,6 +30,8 @@ type
         FPaths: TPaths;
 
         FImage: TImageAsset;
+
+        FTraits: TTraitCollection;
 
 
     public
@@ -93,11 +96,20 @@ begin
 
     FImage :=
         TImageAsset.Create;
+
+
+    FTraits :=
+        TTraitCollection.Create;
 end;
 
 
 destructor TApp.Destroy;
 begin
+    FreeAndNil(
+        FTraits
+    );
+
+
     FreeAndNil(
         FImage
     );
