@@ -96,6 +96,11 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="uImage"/>
       </Unit>
+      <Unit>
+        <Filename Value="source/core/utrait.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uTrait"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

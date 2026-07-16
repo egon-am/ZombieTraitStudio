@@ -7,36 +7,40 @@ interface
 uses
     Classes,
     SysUtils,
-    uPaths,
+
     uConfig,
-    uLogger;
+    uLogger,
+    uPaths,
+    uImage;
 
 
 type
 
-    { Alkalmazás vezérlő }
+    { TApp }
 
     TApp = class
+
     private
-        FPaths: TPaths;
+
         FConfig: TAppConfig;
+
         FLogger: TLogger;
 
-        procedure Initialize;
+        FPaths: TPaths;
+
+        FImage: TImageAsset;
+
 
     public
 
         constructor Create;
+
         destructor Destroy; override;
 
 
         procedure Start;
 
-        procedure Shutdown;
-
-
-        property Paths: TPaths
-            read FPaths;
+        procedure Stop;
 
 
         property Config: TAppConfig
@@ -45,6 +49,14 @@ type
 
         property Logger: TLogger
             read FLogger;
+
+
+        property Paths: TPaths
+            read FPaths;
+
+
+        property Image: TImageAsset
+            read FImage;
 
     end;
 
@@ -56,59 +68,57 @@ constructor TApp.Create;
 begin
     inherited Create;
 
-    Initialize;
+
+    FPaths :=
+        TPaths.Create;
+
+
+    FLogger :=
+        TLogger.Create(
+        FPaths.ApplicationFolder +
+        'logs' +
+        PathDelim +
+        'application.log'
+    );
+
+
+    FConfig :=
+        TAppConfig.Create(
+        FPaths.ApplicationFolder +
+        'config' +
+        PathDelim +
+        'app.ini'
+    );
+
+
+    FImage :=
+        TImageAsset.Create;
 end;
 
 
 destructor TApp.Destroy;
 begin
-    Shutdown;
+    FreeAndNil(
+        FImage
+    );
+
+
+    FreeAndNil(
+        FConfig
+    );
+
+
+    FreeAndNil(
+        FLogger
+    );
+
+
+    FreeAndNil(
+        FPaths
+    );
+
 
     inherited Destroy;
-end;
-
-
-procedure TApp.Initialize;
-var
-    ConfigFile: String;
-    LogFile: String;
-begin
-    FPaths :=
-        TPaths.Create;
-
-
-    ConfigFile :=
-        FPaths.ApplicationFolder +
-        'config' +
-        PathDelim +
-        'zombietraitstudio.ini';
-
-
-    LogFile :=
-        FPaths.ApplicationFolder +
-        'logs' +
-        PathDelim +
-        'application.log';
-
-
-    FConfig :=
-        TAppConfig.Create(
-            ConfigFile
-        );
-
-
-    FConfig.Load;
-
-
-    FLogger :=
-        TLogger.Create(
-            LogFile
-        );
-
-
-    FLogger.Info(
-        'Zombie Trait Studio initialized'
-    );
 end;
 
 
@@ -120,28 +130,10 @@ begin
 end;
 
 
-procedure TApp.Shutdown;
+procedure TApp.Stop;
 begin
-    if Assigned(FLogger) then
-    begin
-        FLogger.Info(
-            'Application shutdown'
-        );
-    end;
-
-
-    FreeAndNil(
-        FLogger
-    );
-
-
-    FreeAndNil(
-        FConfig
-    );
-
-
-    FreeAndNil(
-        FPaths
+    FLogger.Info(
+        'Application stopped'
     );
 end;
 

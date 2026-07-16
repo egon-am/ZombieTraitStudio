@@ -127,7 +127,12 @@ begin
         );
 
 
-        FreeAndNil(FApp);
+        FApp.Stop;
+
+
+        FreeAndNil(
+            FApp
+        );
     end;
 end;
 
@@ -186,8 +191,13 @@ begin
     end;
 
 
-    ImagePreview.Picture.LoadFromFile(
+    FApp.Image.LoadFromFile(
         OpenPictureDialog.FileName
+    );
+
+
+    ImagePreview.Picture.Assign(
+        FApp.Image.Picture
     );
 
 
