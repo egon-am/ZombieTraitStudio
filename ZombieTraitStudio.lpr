@@ -10,7 +10,8 @@ uses
   athreads,
   {$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, uMain, uLogger, uTypes, uExceptions, uPaths, uConfig, uApp;
+  Forms, uMain, uLogger, uTypes, uExceptions, uPaths, uConfig, uApp, uConsts,
+  uEnvironment, uUtils;
 
 {$R *.res}
 
@@ -21,7 +22,7 @@ begin
   Application.MainFormOnTaskbar:=True;
   {$POP}
   Application.Initialize;
-  Application.CreateForm(TfrmMain, frmMain);
+  Application.CreateForm(TMainForm, MainForm);
   Application.Run;
 end.
 

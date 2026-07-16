@@ -52,3 +52,6 @@ Thumbs.db
 *.swo
 *~
 
+# Application runtime data
+config/*
+logs/*

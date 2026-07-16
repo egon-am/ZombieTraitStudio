@@ -36,7 +36,7 @@
       <Unit>
         <Filename Value="source/forms/umain.pas"/>
         <IsPartOfProject Value="True"/>
-        <ComponentName Value="frmMain"/>
+        <ComponentName Value="MainForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uMain"/>
@@ -71,6 +71,21 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="uApp"/>
       </Unit>
+      <Unit>
+        <Filename Value="source/core/uconsts.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uConsts"/>
+      </Unit>
+      <Unit>
+        <Filename Value="source/core/uenvironment.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uEnvironment"/>
+      </Unit>
+      <Unit>
+        <Filename Value="source/core/uutils.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uUtils"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -84,6 +99,9 @@
       <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Linking>
+      <Debugging>
+        <DebugInfoType Value="dsDwarf3"/>
+      </Debugging>
       <Options>
         <Win32>
           <GraphicApplication Value="True"/>

@@ -1,26 +1,174 @@
 unit uMain;
 
-{$mode objfpc}{$H+}
+{$mode ObjFPC}{$H+}
 
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs;
+    Classes,
+    SysUtils,
+    Forms,
+    Controls,
+    Graphics,
+    Dialogs,
+    ExtDlgs,
+    ExtCtrls,
+    ComCtrls,
+    Menus,
+
+    uApp;
 
 type
-  TfrmMain = class(TForm)
-  private
 
-  public
+    { TMainForm }
 
-  end;
+    TMainForm = class(TForm)
+        ImagePreview: TImage;
+
+        MainMenu: TMainMenu;
+
+        FileMenu: TMenuItem;
+        OpenImageMenuItem: TMenuItem;
+        SeparatorMenuItem: TMenuItem;
+        ExitMenuItem: TMenuItem;
+
+        ToolsMenu: TMenuItem;
+        SettingsMenuItem: TMenuItem;
+
+        HelpMenu: TMenuItem;
+        AboutMenuItem: TMenuItem;
+
+        OpenPictureDialog: TOpenPictureDialog;
+
+        StatusBar: TStatusBar;
+
+
+        procedure FormCreate(Sender: TObject);
+
+        procedure FormDestroy(Sender: TObject);
+
+        procedure OpenImageMenuItemClick(Sender: TObject);
+
+        procedure ExitMenuItemClick(Sender: TObject);
+
+        procedure AboutMenuItemClick(Sender: TObject);
+
+
+    private
+
+        FApp: TApp;
+
+
+        procedure UpdateStatus(
+            const AText: String
+        );
+
+
+    public
+
+    end;
+
 
 var
-  frmMain: TfrmMain;
+    MainForm: TMainForm;
+
 
 implementation
 
+
 {$R *.lfm}
 
-end.
 
+procedure TMainForm.FormCreate(Sender: TObject);
+begin
+    FApp :=
+        TApp.Create;
+
+
+    FApp.Start;
+
+
+    UpdateStatus(
+        'Zombie Trait Studio ready'
+    );
+
+
+    FApp.Logger.Info(
+        'Main form initialized'
+    );
+end;
+
+
+procedure TMainForm.FormDestroy(Sender: TObject);
+begin
+    if Assigned(FApp) then
+    begin
+        FApp.Logger.Info(
+            'Main form destroyed'
+        );
+
+
+        FreeAndNil(FApp);
+    end;
+end;
+
+
+procedure TMainForm.UpdateStatus(
+    const AText: String
+);
+begin
+    StatusBar.SimpleText :=
+        AText;
+end;
+
+
+procedure TMainForm.OpenImageMenuItemClick(
+    Sender: TObject
+);
+begin
+    if not OpenPictureDialog.Execute then
+    begin
+        Exit;
+    end;
+
+
+    ImagePreview.Picture.LoadFromFile(
+        OpenPictureDialog.FileName
+    );
+
+
+    UpdateStatus(
+        'Loaded: ' +
+        ExtractFileName(
+            OpenPictureDialog.FileName
+        )
+    );
+
+
+    FApp.Logger.Info(
+        'Image loaded: ' +
+        OpenPictureDialog.FileName
+    );
+end;
+
+
+procedure TMainForm.ExitMenuItemClick(
+    Sender: TObject
+);
+begin
+    Close;
+end;
+
+
+procedure TMainForm.AboutMenuItemClick(
+    Sender: TObject
+);
+begin
+    ShowMessage(
+        'Zombie Trait Studio'#13#10 +
+        'Version 0.1.0'
+    );
+end;
+
+
+end.
