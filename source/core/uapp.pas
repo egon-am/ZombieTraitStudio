@@ -12,7 +12,8 @@ uses
     uLogger,
     uPaths,
     uImage,
-    uTraitCollection;
+    uTraitCollection,
+    uTraitLoader;
 
 
 type
@@ -32,6 +33,8 @@ type
         FImage: TImageAsset;
 
         FTraits: TTraitCollection;
+
+        FTraitLoader: TTraitLoader;
 
 
     public
@@ -61,6 +64,10 @@ type
         property Image: TImageAsset
             read FImage;
 
+
+        property Traits: TTraitCollection
+            read FTraits;
+
     end;
 
 
@@ -78,20 +85,20 @@ begin
 
     FLogger :=
         TLogger.Create(
-        FPaths.ApplicationFolder +
-        'logs' +
-        PathDelim +
-        'application.log'
-    );
+            FPaths.ApplicationFolder +
+            'logs' +
+            PathDelim +
+            'application.log'
+        );
 
 
     FConfig :=
         TAppConfig.Create(
-        FPaths.ApplicationFolder +
-        'config' +
-        PathDelim +
-        'app.ini'
-    );
+            FPaths.ApplicationFolder +
+            'config' +
+            PathDelim +
+            'app.ini'
+        );
 
 
     FImage :=
@@ -100,11 +107,25 @@ begin
 
     FTraits :=
         TTraitCollection.Create;
+
+
+    FTraitLoader :=
+        TTraitLoader.Create(
+            FPaths.ApplicationFolder +
+            'traits' +
+            PathDelim +
+            'metadata'
+        );
 end;
 
 
 destructor TApp.Destroy;
 begin
+    FreeAndNil(
+        FTraitLoader
+    );
+
+
     FreeAndNil(
         FTraits
     );
@@ -136,6 +157,14 @@ end;
 
 procedure TApp.Start;
 begin
+    FConfig.Load;
+
+
+    FTraitLoader.Load(
+        FTraits
+    );
+
+
     FLogger.Info(
         'Application started'
     );
@@ -144,6 +173,9 @@ end;
 
 procedure TApp.Stop;
 begin
+    FConfig.Save;
+
+
     FLogger.Info(
         'Application stopped'
     );

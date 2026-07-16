@@ -80,6 +80,9 @@ type
         procedure InitializeInterface;
 
 
+        procedure RefreshTraitList;
+
+
     public
 
     end;
@@ -150,6 +153,10 @@ begin
         'Trait';
 
 
+    TraitList.Columns.Add.Caption :=
+        'Category';
+
+
     TraitInfo.Clear;
 
 
@@ -169,6 +176,45 @@ begin
 
     ImagePreview.Proportional :=
         True;
+
+
+    RefreshTraitList;
+end;
+
+
+procedure TMainForm.RefreshTraitList;
+var
+    I: Integer;
+    Item: TListItem;
+begin
+    TraitList.Items.BeginUpdate;
+
+    try
+
+        TraitList.Items.Clear;
+
+
+        for I := 0 to FApp.Traits.Count - 1 do
+        begin
+            Item :=
+                TraitList.Items.Add;
+
+
+            Item.Caption :=
+                FApp.Traits.Items[I].Name;
+
+
+            Item.SubItems.Add(
+                FApp.Traits.Items[I].Category
+            );
+        end;
+
+
+    finally
+
+        TraitList.Items.EndUpdate;
+
+    end;
 end;
 
 

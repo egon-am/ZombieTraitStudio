@@ -23,22 +23,18 @@ type
 
         FCategory: String;
 
+
         FDescription: String;
+
 
         FThumbnailFile: String;
 
         FMaskFile: String;
 
-        FMetadataFile: String;
-
-        FEnabled: Boolean;
-
 
     public
 
         constructor Create;
-
-        procedure Clear;
 
 
         property Id: String
@@ -70,16 +66,6 @@ type
             read FMaskFile
             write FMaskFile;
 
-
-        property MetadataFile: String
-            read FMetadataFile
-            write FMetadataFile;
-
-
-        property Enabled: Boolean
-            read FEnabled
-            write FEnabled;
-
     end;
 
 
@@ -90,35 +76,29 @@ constructor TTrait.Create;
 begin
     inherited Create;
 
-    Clear;
-end;
 
-
-procedure TTrait.Clear;
-begin
     FId :=
         '';
+
 
     FName :=
         '';
 
+
     FCategory :=
         '';
+
 
     FDescription :=
         '';
 
+
     FThumbnailFile :=
         '';
 
+
     FMaskFile :=
         '';
-
-    FMetadataFile :=
-        '';
-
-    FEnabled :=
-        True;
 end;
 
 
