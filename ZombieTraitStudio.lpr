@@ -11,7 +11,7 @@ uses
   {$ENDIF}
   Interfaces, // this includes the LCL widgetset
   Forms, uMain, uLogger, uTypes, uExceptions, uPaths, uConfig, uApp, uConsts,
-  uEnvironment, uUtils, uDocument, uImage, uTrait;
+  uEnvironment, uUtils, uDocument, uImage, uTrait, uTraitCollection;
 
 {$R *.res}
 

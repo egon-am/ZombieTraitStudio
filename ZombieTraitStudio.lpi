@@ -101,6 +101,11 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="uTrait"/>
       </Unit>
+      <Unit>
+        <Filename Value="source/core/utraitcollection.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uTraitCollection"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
