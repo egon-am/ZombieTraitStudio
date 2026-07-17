@@ -111,6 +111,21 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="uTraitLoader"/>
       </Unit>
+      <Unit>
+        <Filename Value="source/core/umask.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uMask"/>
+      </Unit>
+      <Unit>
+        <Filename Value="source/core/umaskmanager.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uMaskManager"/>
+      </Unit>
+      <Unit>
+        <Filename Value="source/core/uworkspace.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uWorkspace"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

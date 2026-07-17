@@ -99,11 +99,6 @@ type
         procedure ShowSelectedTrait;
 
 
-        procedure LoadTraitPreview(
-            const ATrait: TTrait
-        );
-
-
     public
 
     end;
@@ -117,6 +112,7 @@ implementation
 
 
 {$R *.lfm}
+
 
 
 procedure TMainForm.FormCreate(Sender: TObject);
@@ -255,6 +251,7 @@ procedure TMainForm.ShowSelectedTrait;
 var
     Index: Integer;
     Trait: TTrait;
+
 begin
     if TraitList.Selected = nil then
     begin
@@ -324,43 +321,46 @@ begin
     );
 
 
-    LoadTraitPreview(
-        Trait
-    );
-end;
-
-
-
-procedure TMainForm.LoadTraitPreview(
-    const ATrait: TTrait
-);
-begin
     TraitPreview.Picture.Clear;
 
 
-    if not Assigned(ATrait) then
-    begin
-        Exit;
-    end;
-
-
-    if ATrait.ThumbnailFile = '' then
-    begin
-        Exit;
-    end;
-
-
-    if not FileExists(
-        ATrait.ThumbnailFile
+    if FileExists(
+        Trait.ThumbnailFile
     ) then
     begin
-        Exit;
+        TraitPreview.Picture.LoadFromFile(
+            Trait.ThumbnailFile
+        );
     end;
 
 
-    TraitPreview.Picture.LoadFromFile(
-        ATrait.ThumbnailFile
+    FApp.Masks.AssignFromTrait(
+        Trait
     );
+
+
+    if FApp.Masks.HasMask then
+    begin
+        TraitInfo.Lines.Add(
+            ''
+        );
+
+
+        TraitInfo.Lines.Add(
+            'Mask loaded.'
+        );
+    end
+    else
+    begin
+        TraitInfo.Lines.Add(
+            ''
+        );
+
+
+        TraitInfo.Lines.Add(
+            'No mask available.'
+        );
+    end;
 end;
 
 
@@ -411,6 +411,9 @@ begin
     FApp.Image.LoadFromFile(
         OpenPictureDialog.FileName
     );
+
+
+    FApp.Image.ClearMask;
 
 
     SourceImagePreview.Picture.Assign(

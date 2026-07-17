@@ -13,7 +13,8 @@ uses
     uPaths,
     uImage,
     uTraitCollection,
-    uTraitLoader;
+    uTraitLoader,
+    uMaskManager;
 
 
 type
@@ -35,6 +36,8 @@ type
         FTraits: TTraitCollection;
 
         FTraitLoader: TTraitLoader;
+
+        FMaskManager: TMaskManager;
 
 
     public
@@ -68,10 +71,15 @@ type
         property Traits: TTraitCollection
             read FTraits;
 
+
+        property Masks: TMaskManager
+            read FMaskManager;
+
     end;
 
 
 implementation
+
 
 
 constructor TApp.Create;
@@ -116,11 +124,21 @@ begin
             PathDelim +
             'metadata'
         );
+
+
+    FMaskManager :=
+        TMaskManager.Create;
 end;
+
 
 
 destructor TApp.Destroy;
 begin
+    FreeAndNil(
+        FMaskManager
+    );
+
+
     FreeAndNil(
         FTraitLoader
     );
@@ -155,6 +173,7 @@ begin
 end;
 
 
+
 procedure TApp.Start;
 begin
     FConfig.Load;
@@ -171,6 +190,7 @@ begin
 end;
 
 
+
 procedure TApp.Stop;
 begin
     FConfig.Save;
@@ -180,6 +200,7 @@ begin
         'Application stopped'
     );
 end;
+
 
 
 end.

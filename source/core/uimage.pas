@@ -7,7 +7,9 @@ interface
 uses
     Classes,
     SysUtils,
-    Graphics;
+    Graphics,
+
+    uMask;
 
 
 type
@@ -25,6 +27,8 @@ type
         FHeight: Integer;
 
         FPicture: TPicture;
+
+        FMask: TMask;
 
 
         procedure UpdateDimensions;
@@ -45,7 +49,18 @@ type
         );
 
 
+        procedure LoadMask(
+            const AFileName: String
+        );
+
+
+        procedure ClearMask;
+
+
         function IsLoaded: Boolean;
+
+
+        function HasMask: Boolean;
 
 
         property FileName: String
@@ -63,10 +78,15 @@ type
         property Picture: TPicture
             read FPicture;
 
+
+        property Mask: TMask
+            read FMask;
+
     end;
 
 
 implementation
+
 
 
 constructor TImageAsset.Create;
@@ -78,12 +98,22 @@ begin
         TPicture.Create;
 
 
+    FMask :=
+        TMask.Create;
+
+
     Clear;
 end;
 
 
+
 destructor TImageAsset.Destroy;
 begin
+    FreeAndNil(
+        FMask
+    );
+
+
     FreeAndNil(
         FPicture
     );
@@ -91,6 +121,7 @@ begin
 
     inherited Destroy;
 end;
+
 
 
 procedure TImageAsset.Clear;
@@ -108,7 +139,11 @@ begin
 
 
     FPicture.Clear;
+
+
+    ClearMask;
 end;
+
 
 
 procedure TImageAsset.LoadFromFile(
@@ -116,6 +151,14 @@ procedure TImageAsset.LoadFromFile(
 );
 begin
     Clear;
+
+
+    if not FileExists(
+        AFileName
+    ) then
+    begin
+        Exit;
+    end;
 
 
     FPicture.LoadFromFile(
@@ -131,6 +174,25 @@ begin
 
     UpdateDimensions;
 end;
+
+
+
+procedure TImageAsset.LoadMask(
+    const AFileName: String
+);
+begin
+    FMask.LoadFromFile(
+        AFileName
+    );
+end;
+
+
+
+procedure TImageAsset.ClearMask;
+begin
+    FMask.Clear;
+end;
+
 
 
 procedure TImageAsset.UpdateDimensions;
@@ -149,11 +211,21 @@ begin
 end;
 
 
+
 function TImageAsset.IsLoaded: Boolean;
 begin
     Result :=
         FFileName <> '';
 end;
+
+
+
+function TImageAsset.HasMask: Boolean;
+begin
+    Result :=
+        FMask.IsLoaded;
+end;
+
 
 
 end.
