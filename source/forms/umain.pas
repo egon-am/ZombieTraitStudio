@@ -18,7 +18,10 @@ uses
     Menus,
 
     uApp,
-    uTrait;
+    uTrait,
+
+    BGRABitmap,
+    BGRABitmapTypes;
 
 
 type
