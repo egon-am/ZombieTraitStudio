@@ -12,7 +12,7 @@ uses
   Interfaces, // this includes the LCL widgetset
   Forms, uMain, uLogger, uTypes, uExceptions, uPaths, uConfig, uApp, uConsts,
   uEnvironment, uUtils, uDocument, uImage, uTrait, uTraitCollection,
-  uTraitLoader, uMask, uMaskManager, uWorkspace;
+  uTraitLoader, uMask, uMaskManager, uWorkspace, uWorkspaceRenderer;
 
 {$R *.res}
 

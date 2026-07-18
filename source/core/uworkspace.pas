@@ -27,6 +27,12 @@ type
 
         FMask: TMask;
 
+        FZoom: Single;
+
+        FOffsetX: Integer;
+
+        FOffsetY: Integer;
+
 
     public
 
@@ -64,6 +70,21 @@ type
         property Mask: TMask
             read FMask;
 
+
+        property Zoom: Single
+            read FZoom
+            write FZoom;
+
+
+        property OffsetX: Integer
+            read FOffsetX
+            write FOffsetX;
+
+
+        property OffsetY: Integer
+            read FOffsetY
+            write FOffsetY;
+
     end;
 
 
@@ -86,6 +107,18 @@ begin
 
     FTrait :=
         nil;
+
+
+    FZoom :=
+        1.0;
+
+
+    FOffsetX :=
+        0;
+
+
+    FOffsetY :=
+        0;
 end;
 
 
@@ -117,6 +150,18 @@ begin
 
     FTrait :=
         nil;
+
+
+    FZoom :=
+        1.0;
+
+
+    FOffsetX :=
+        0;
+
+
+    FOffsetY :=
+        0;
 end;
 
 
@@ -139,9 +184,19 @@ begin
     );
 
 
-    FImage.LoadMask(
-        ''
-    );
+    FImage.ClearMask;
+
+
+    FZoom :=
+        1.0;
+
+
+    FOffsetX :=
+        0;
+
+
+    FOffsetY :=
+        0;
 end;
 
 
@@ -160,19 +215,15 @@ begin
     if not Assigned(
         FTrait
     ) then
-    begin
         Exit;
-    end;
 
 
     if FileExists(
         FTrait.MaskFile
     ) then
-    begin
         FMask.LoadFromFile(
             FTrait.MaskFile
         );
-    end;
 end;
 
 

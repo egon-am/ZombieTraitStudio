@@ -129,6 +129,11 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="uWorkspace"/>
       </Unit>
+      <Unit>
+        <Filename Value="uworkspacerenderer.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uWorkspaceRenderer"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -162,6 +167,12 @@
       </Item>
       <Item>
         <Name Value="EFOpenError"/>
+      </Item>
+      <Item>
+        <Name Value="RunError(216)"/>
+      </Item>
+      <Item>
+        <Name Value="EAccessViolation"/>
       </Item>
     </Exceptions>
   </Debugging>

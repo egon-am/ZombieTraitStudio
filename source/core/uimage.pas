@@ -1,231 +1,231 @@
-unit uImage;
+  unit uImage;
 
-{$mode ObjFPC}{$H+}
+  {$mode ObjFPC}{$H+}
 
-interface
+  interface
 
-uses
-    Classes,
-    SysUtils,
-    Graphics,
+  uses
+      Classes,
+      SysUtils,
+      Graphics,
 
-    uMask;
+      uMask;
 
 
-type
+  type
 
-    { TImageAsset }
+      { TImageAsset }
 
-    TImageAsset = class
+      TImageAsset = class
 
-    private
+      private
 
-        FFileName: String;
+          FFileName: String;
 
-        FWidth: Integer;
+          FWidth: Integer;
 
-        FHeight: Integer;
+          FHeight: Integer;
 
-        FPicture: TPicture;
+          FPicture: TPicture;
 
-        FMask: TMask;
+          FMask: TMask;
 
 
-        procedure UpdateDimensions;
+          procedure UpdateDimensions;
 
 
-    public
+      public
 
-        constructor Create;
+          constructor Create;
 
-        destructor Destroy; override;
+          destructor Destroy; override;
 
 
-        procedure Clear;
+          procedure Clear;
 
 
-        procedure LoadFromFile(
-            const AFileName: String
-        );
+          procedure LoadFromFile(
+              const AFileName: String
+          );
 
 
-        procedure LoadMask(
-            const AFileName: String
-        );
+          procedure LoadMask(
+              const AFileName: String
+          );
 
 
-        procedure ClearMask;
+          procedure ClearMask;
 
 
-        function IsLoaded: Boolean;
+          function IsLoaded: Boolean;
 
 
-        function HasMask: Boolean;
+          function HasMask: Boolean;
 
 
-        property FileName: String
-            read FFileName;
+          property FileName: String
+              read FFileName;
 
 
-        property Width: Integer
-            read FWidth;
+          property Width: Integer
+              read FWidth;
 
 
-        property Height: Integer
-            read FHeight;
+          property Height: Integer
+              read FHeight;
 
 
-        property Picture: TPicture
-            read FPicture;
+          property Picture: TPicture
+              read FPicture;
 
 
-        property Mask: TMask
-            read FMask;
+          property Mask: TMask
+              read FMask;
 
-    end;
+      end;
 
 
-implementation
+  implementation
 
 
 
-constructor TImageAsset.Create;
-begin
-    inherited Create;
+  constructor TImageAsset.Create;
+  begin
+      inherited Create;
 
 
-    FPicture :=
-        TPicture.Create;
+      FPicture :=
+          TPicture.Create;
 
 
-    FMask :=
-        TMask.Create;
+      FMask :=
+          TMask.Create;
 
 
-    Clear;
-end;
+      Clear;
+  end;
 
 
 
-destructor TImageAsset.Destroy;
-begin
-    FreeAndNil(
-        FMask
-    );
+  destructor TImageAsset.Destroy;
+  begin
+      FreeAndNil(
+          FMask
+      );
 
 
-    FreeAndNil(
-        FPicture
-    );
+      FreeAndNil(
+          FPicture
+      );
 
 
-    inherited Destroy;
-end;
+      inherited Destroy;
+  end;
 
 
 
-procedure TImageAsset.Clear;
-begin
-    FFileName :=
-        '';
+  procedure TImageAsset.Clear;
+  begin
+      FFileName :=
+          '';
 
 
-    FWidth :=
-        0;
+      FWidth :=
+          0;
 
 
-    FHeight :=
-        0;
+      FHeight :=
+          0;
 
 
-    FPicture.Clear;
+      FPicture.Clear;
 
 
-    ClearMask;
-end;
+      ClearMask;
+  end;
 
 
 
-procedure TImageAsset.LoadFromFile(
-    const AFileName: String
-);
-begin
-    Clear;
+  procedure TImageAsset.LoadFromFile(
+      const AFileName: String
+  );
+  begin
+      Clear;
 
 
-    if not FileExists(
-        AFileName
-    ) then
-    begin
-        Exit;
-    end;
+      if not FileExists(
+          AFileName
+      ) then
+      begin
+          Exit;
+      end;
 
 
-    FPicture.LoadFromFile(
-        AFileName
-    );
+      FPicture.LoadFromFile(
+          AFileName
+      );
 
 
-    FFileName :=
-        ExpandFileName(
-            AFileName
-        );
+      FFileName :=
+          ExpandFileName(
+              AFileName
+          );
 
 
-    UpdateDimensions;
-end;
+      UpdateDimensions;
+  end;
 
 
 
-procedure TImageAsset.LoadMask(
-    const AFileName: String
-);
-begin
-    FMask.LoadFromFile(
-        AFileName
-    );
-end;
+  procedure TImageAsset.LoadMask(
+      const AFileName: String
+  );
+  begin
+      FMask.LoadFromFile(
+          AFileName
+      );
+  end;
 
 
 
-procedure TImageAsset.ClearMask;
-begin
-    FMask.Clear;
-end;
+  procedure TImageAsset.ClearMask;
+  begin
+      FMask.Clear;
+  end;
 
 
 
-procedure TImageAsset.UpdateDimensions;
-begin
-    if Assigned(
-        FPicture.Graphic
-    ) then
-    begin
-        FWidth :=
-            FPicture.Width;
+  procedure TImageAsset.UpdateDimensions;
+  begin
+      if Assigned(
+          FPicture.Graphic
+      ) then
+      begin
+          FWidth :=
+              FPicture.Width;
 
 
-        FHeight :=
-            FPicture.Height;
-    end;
-end;
+          FHeight :=
+              FPicture.Height;
+      end;
+  end;
 
 
 
-function TImageAsset.IsLoaded: Boolean;
-begin
-    Result :=
-        FFileName <> '';
-end;
+  function TImageAsset.IsLoaded: Boolean;
+  begin
+      Result :=
+          FFileName <> '';
+  end;
 
 
 
-function TImageAsset.HasMask: Boolean;
-begin
-    Result :=
-        FMask.IsLoaded;
-end;
+  function TImageAsset.HasMask: Boolean;
+  begin
+      Result :=
+          FMask.IsLoaded;
+  end;
 
 
 
-end.
+  end.
